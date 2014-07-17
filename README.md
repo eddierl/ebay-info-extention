@@ -1,4 +1,4 @@
 ebay-info-extention
 ===================
 
-Add info about items in the search page
+Adds info about items in the search page
