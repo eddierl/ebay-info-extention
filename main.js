@@ -21,17 +21,17 @@ function main() {
 	
 	
 	requests_count++;
-	xhr[i] = new XMLHttpRequest();	
+	xhr.push(new XMLHttpRequest());
 	
 	// async requests
-	xhr[i].open("GET", url, true);
+	xhr[xhr.length-1].open("GET", url, true);
 	
 	// there is need to assign the onreadystatechange this way
 	// otherwise the function is contact with index = 0
-	xhr[i].onreadystatechange = function(index) {
+	xhr[xhr.length-1].onreadystatechange = function(index) {
 	
 		return function() {
-			  if (xhr[index].readyState == 4) {
+			  if (xhr[index].readyState == 4 && xhr[index].status==200) {
 				
 				var parser=new DOMParser();
 				var res=parser.parseFromString(xhr[index].responseText,"text/html");
@@ -58,11 +58,12 @@ function main() {
 				
 			}
 		}
-	}(i);
-	
-	xhr[i].send();
+		}(xhr.length-1);
+		
+		xhr[xhr.length-1].send();
+		
 	}
-	console.log("Number of requests initialized: " + requests_count + "/" + i);		
+	console.log("Number of requests initialized: " + xhr.length + "/" + results.length);		
 }
 
 main();
