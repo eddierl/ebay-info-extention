@@ -7,27 +7,31 @@ function ms2days(ms) {
 	return ms/1000/60/60/24;
 }
 function generateCss(from_delivery) {
-var css_result = "";
+
+	var css_result = "";
+	
 	function updateColorScheme(levels) {
 		var count = 0
 		var count2 = 0;
 		for (l in levels) count++;
-		scheme={0 : '{color : limegreen}',
-				1 : '{color : gold}',
-				2 : '{color : orange}',
-				3 : '{color : red}',
-				4 : '{color : brown}'};
+		scheme = {0 : '{color : limegreen}',
+				  1 : '{color : gold}',
+				  2 : '{color : orange}',
+				  3 : '{color : red}',
+				  4 : '{color : brown}'};
 
-		if(count<5) {delete scheme[4]}
-		if(count<4) {delete scheme[2]}
-		if(count<3) {delete scheme[1]}
-		if(count<2) {delete scheme[3]}
+		if (count < 5) delete scheme[4]
+		if (count < 4) delete scheme[2]
+		if (count < 3) delete scheme[1]
+		if (count < 2) delete scheme[3]
 		
-		for(l in levels) {levels[l] = scheme[count2]; count2++};
+		scheme_list = [];
+		for (color in scheme) scheme_list.push(scheme[color]);
+		for (l in levels) {levels[l] = scheme_list[count2]; count2++};
 	}
 
 	var unique = {};
-	from_delivery.forEach(function(item) {unique[item]=item});
+	from_delivery.forEach(function(item) {unique[item] = item});
 	updateColorScheme(unique);
 	
 	for (item in unique) css_result += '.my_dynclass' + item + ' ' + unique[item] + ' ';
@@ -42,10 +46,10 @@ function main() {
 	var url;
 	
 	// array of all xhr ojects
-	var xhr= [];
+	var xhr = [];
 	
 	// how much accual reuqests were initialized
-	var requests_count=0;
+	var requests_count = 0;
 	
 	for (var i = 0; i < results.length; i++) {
 	
@@ -54,7 +58,7 @@ function main() {
 	
 	// helps reduce number of requests if there is no shipping anyway
 	shipping_details = results[i].getElementsByClassName("ship")[0];
-	if((!(shipping_details)) ||shipping_details.innerText.indexOf("not") != -1) {continue;}
+	if((!(shipping_details)) ||shipping_details.innerText.indexOf("not") != -1) continue;
 	
 	
 	requests_count++;
@@ -68,7 +72,7 @@ function main() {
 	xhr[xhr.length-1].onreadystatechange = function(index) {
 	
 		return function() {
-			  if (xhr[index].readyState == 4 && xhr[index].status==200) {
+			  if (xhr[index].readyState == 4 && xhr[index].status == 200) {
 				
 				var parser=new DOMParser();
 				var res=parser.parseFromString(xhr[index].responseText,"text/html");
@@ -84,7 +88,7 @@ function main() {
 				// attach a dynamic class to the estimate date
 				var fd = ms2days((parseDate(estimated_date.innerText)[1] - parseDate(Date())[0]));
 				from_delivery.push(fd);
-				estimated_date.className += "my_dynclass" + fd;
+				estimated_date.className += " my_dynclass" + fd;
 				results[index].getElementsByClassName("dtl dtlsp")[0].appendChild(estimated_date);
 				
 				// add seller rank to the item
