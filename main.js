@@ -69,11 +69,15 @@ function main() {
 	
 	// there is need to assign the onreadystatechange this way
 	// otherwise the function is contact with index = 0
+	var waitinf_for_text=document.createElement("div");
+	waitinf_for_text.innerText="waiting for data..";
+	results[xhr.length-1].getElementsByClassName("dtl dtlsp")[0].appendChild(waitinf_for_text);
 	xhr[xhr.length-1].onreadystatechange = function(index) {
 	
 		return function() {
 			  if (xhr[index].readyState == 4 && xhr[index].status == 200) {
 				
+				results[index].getElementsByClassName("dtl dtlsp")[0].removeChild(results[index].getElementsByClassName("dtl dtlsp")[0].lastChild);
 				var parser=new DOMParser();
 				var res=parser.parseFromString(xhr[index].responseText,"text/html");
 				
