@@ -12,29 +12,12 @@ var css_result = "";
 		var count = 0
 		var count2 = 0;
 		for (l in levels) count++;
-		switch(count) {
-			case 0:
-				 scheme=['green'];
-				 break;
-			case 1:
-				 scheme=['green'];
-				 break;
-			case 2:
-				 scheme=['green','red'];
-				 break;
-			case 3:
-				 scheme=['green','yellow','red'];
-				 break;
-			case 4:
-				 scheme=['green','yellow','orange','red'];
-				 break;
-			case 5:
-				 scheme=['green','yellow','orange','red','brown'];
-				 break;
-			default:
-				scheme=['green','yellow','orange','red','brown','brown','brown','brown'];
-				 break;
-		}
+		scheme=['green','yellow','orange','red','brown'];
+		
+		if(count<5) {scheme.splice(scheme.indexOf("brown"),1)}
+		if(count<4) {scheme.splice(scheme.indexOf("orange"),1)}
+		if(count<3) {scheme.splice(scheme.indexOf("yellow"),1)}
+		if(count<2) {scheme.splice(scheme.indexOf("red"),1)}
 		
 		for(l in levels) {levels[l] = scheme[count2]; count2++};
 	}
@@ -95,7 +78,7 @@ function main() {
 				estimated_date.style.lineHeight ="1.25em";
 				
 				// attach a dynamic class to the estimate date
-				var fd = ms2days((parseDate(estimated_date.innerText)[0] - parseDate(Date())[0]));
+				var fd = ms2days((parseDate(estimated_date.innerText)[1] - parseDate(Date())[0]));
 				from_delivery.push(fd);
 				estimated_date.className += "my_dynclass" + fd;
 				results[index].getElementsByClassName("dtl dtlsp")[0].appendChild(estimated_date);
