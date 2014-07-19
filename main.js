@@ -17,7 +17,7 @@ function main() {
 	
 	// helps reduce number of requests if there is no shipping anyway
 	shipping_details = results[i].getElementsByClassName("ship")[0];
-	if(shipping_details.innerText.indexOf("not") != -1) {continue;}
+	if((!(shipping_details)) ||shipping_details.innerText.indexOf("not") != -1) {continue;}
 	
 	
 	requests_count++;
@@ -36,7 +36,8 @@ function main() {
 				var parser=new DOMParser();
 				var res=parser.parseFromString(xhr[index].responseText,"text/html");
 				
-				var seller_id = res.getElementsByClassName("mbg-nw")[0].innerText;
+				if (!(res)){return;};
+				var seller_node = res.getElementsByClassName("mbg-nw")[0];
 				var item_desc = res.getElementById("vi-lkhdr-itmTitl").innerText;
 
 				// add estimated date for delivery to the item
@@ -51,7 +52,7 @@ function main() {
 				
 				// add external url for a feed about the seller to the item
 				var feedback_url=document.createElement("a");
-				feedback_url.href = "http://www.feedbackselector.com/feedsearch.php?seller=" + seller_id + "&itemName=" + item_desc;
+				feedback_url.href = "http://www.feedbackselector.com/feedsearch.php?seller=" + seller_node.innerText + "&itemName=" + item_desc;
 				feedback_url.innerText = "feedbacks";
 				feedback_url.target = "blank";
 				results[index].getElementsByClassName("dtl dtlsp")[0].appendChild(feedback_url);
