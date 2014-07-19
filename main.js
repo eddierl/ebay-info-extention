@@ -1,5 +1,55 @@
+function parseDate(dateString) {
+	var datesArray =  dateString.match(/[^\d\s]+\s\d+/g);
+	return datesArray.map(function(dateS) { return Date.parse(dateS) });
+}
+
+function ms2days(ms) {
+	return ms/1000/60/60/24;
+}
+function generateCss(from_delivery) {
+var css_result = "";
+	function updateColorScheme(levels) {
+		var count = 0
+		var count2 = 0;
+		for (l in levels) count++;
+		switch(count) {
+			case 0:
+				 scheme=['green'];
+				 break;
+			case 1:
+				 scheme=['green'];
+				 break;
+			case 2:
+				 scheme=['green','red'];
+				 break;
+			case 3:
+				 scheme=['green','yellow','red'];
+				 break;
+			case 4:
+				 scheme=['green','yellow','orange','red'];
+				 break;
+			case 5:
+				 scheme=['green','yellow','orange','red','brown'];
+				 break;
+			default:
+				scheme=['green','yellow','orange','red','brown','brown','brown','brown'];
+				 break;
+		}
+		
+		for(l in levels) {levels[l] = scheme[count2]; count2++};
+	}
+
+	var unique = {};
+	from_delivery.forEach(function(item) {unique[item]=item});
+	updateColorScheme(unique);
+	
+	for (item in unique) css_result += '.my_dynclass' + item + ' { color: ' + unique[item] + '; }';
+
+	return css_result;
+}
 function main() {
 
+	var from_delivery = [];
 	var results=document.getElementById("ResultSetItems").getElementsByTagName("table");
 	
 	var url;
@@ -43,6 +93,11 @@ function main() {
 				// add estimated date for delivery to the item
 				var estimated_date = res.getElementsByClassName("sh-del-frst")[0].childNodes[1];
 				estimated_date.style.lineHeight ="1.25em";
+				
+				// attach a dynamic class to the estimate date
+				var fd = ms2days((parseDate(estimated_date.innerText)[0] - parseDate(Date())[0]));
+				from_delivery.push(fd);
+				estimated_date.className += "my_dynclass" + fd;
 				results[index].getElementsByClassName("dtl dtlsp")[0].appendChild(estimated_date);
 				
 				// add seller rank to the item
@@ -65,6 +120,15 @@ function main() {
 		
 	}
 	console.log("Number of requests initialized: " + xhr.length + "/" + results.length);		
+
+	// add css configurations 
+	var styleSheetElement = document.createElement("style");
+	styleSheetElement.type = "text/css";
+	document.getElementsByTagName("head")[0].appendChild(styleSheetElement);
+	var check = setInterval(function(){
+		if(xhr.length == from_delivery.length) {window.clearInterval(check);} 
+		else {styleSheetElement.innerHTML = generateCss(from_delivery);}}, 1000);
+	
 }
 
 main();
