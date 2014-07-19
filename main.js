@@ -12,12 +12,16 @@ var css_result = "";
 		var count = 0
 		var count2 = 0;
 		for (l in levels) count++;
-		scheme=['green','yellow','orange','red','brown'];
-		
-		if(count<5) {scheme.splice(scheme.indexOf("brown"),1)}
-		if(count<4) {scheme.splice(scheme.indexOf("orange"),1)}
-		if(count<3) {scheme.splice(scheme.indexOf("yellow"),1)}
-		if(count<2) {scheme.splice(scheme.indexOf("red"),1)}
+		scheme={0 : '{color : limegreen}',
+				1 : '{color : gold}',
+				2 : '{color : orange}',
+				3 : '{color : red}',
+				4 : '{color : brown}'};
+
+		if(count<5) {delete scheme[4]}
+		if(count<4) {delete scheme[2]}
+		if(count<3) {delete scheme[1]}
+		if(count<2) {delete scheme[3]}
 		
 		for(l in levels) {levels[l] = scheme[count2]; count2++};
 	}
@@ -26,7 +30,7 @@ var css_result = "";
 	from_delivery.forEach(function(item) {unique[item]=item});
 	updateColorScheme(unique);
 	
-	for (item in unique) css_result += '.my_dynclass' + item + ' { color: ' + unique[item] + '; }';
+	for (item in unique) css_result += '.my_dynclass' + item + ' ' + unique[item] + ' ';
 
 	return css_result;
 }
@@ -102,7 +106,7 @@ function main() {
 		xhr[xhr.length-1].send();
 		
 	}
-	console.log("Number of requests initialized: " + xhr.length + "/" + results.length);		
+	console.log("Number of requests initialized: " + xhr.length + "/" + results.length);
 
 	// add css configurations 
 	var styleSheetElement = document.createElement("style");
