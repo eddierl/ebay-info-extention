@@ -120,10 +120,44 @@ function main() {
 	var styleSheetElement = document.createElement("style");
 	styleSheetElement.type = "text/css";
 	document.getElementsByTagName("head")[0].appendChild(styleSheetElement);
+	
+	var divElement = document.createElement("div");
+	document.getElementsByTagName("body")[0].appendChild(divElement);
+	divElement.id = "tstid";
+	divElement.style.position = "fixed";
+	divElement.style.top = "0";
+	divElement.style.width = "10%";
+	divElement.style.paddingTop = "3%";
+	
+	divElement.innerHTML = "<ul></ul>";
 	var check = setInterval(function(){
 		if(xhr.length == from_delivery.length) {window.clearInterval(check);} 
-		else {styleSheetElement.innerHTML = generateCss(from_delivery);}}, 1000);
+		else {updateContent(styleSheetElement, from_delivery)}}, 1000);
 	
+}
+
+function  generateHelp(from_delivery) {
+	var result = document.createElement("ul");
+	var unique = {};
+	from_delivery.forEach(function(item) {unique[item] = item});
+	
+	for (id in unique) unique[id] = document.getElementsByClassName("my_dynclass" + id)[0].cloneNode(true);
+	
+	for (id in unique) {
+	var il = document.createElement("il");
+	il.appendChild(unique[id]);
+	result.appendChild(il);
+	};
+	
+	
+	return result;
+}
+
+function updateContent(styleSheetElement, from_delivery) {
+styleSheetElement.innerHTML = generateCss(from_delivery);
+
+document.getElementById("tstid").replaceChild(generateHelp(from_delivery),document.getElementById("tstid").firstChild);
+
 }
 
 main();
