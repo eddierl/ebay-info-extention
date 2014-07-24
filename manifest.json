@@ -3,7 +3,7 @@
 
   "name": "EBay info",
   "description": "Adds info about items in the search page",
-  "version": "0.1",
+  "version": "0.1.1",
 
   "content_scripts": [
     {
