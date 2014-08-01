@@ -169,6 +169,7 @@ function main() {
 
 function  generateHelp(from_delivery) {
 	var result = document.createElement("ul");
+	result.style.fontWeight = "bold";
 	var unique = {};
 	from_delivery.forEach(function(item) {unique[item] = item});
 	
@@ -176,6 +177,7 @@ function  generateHelp(from_delivery) {
 		var items = document.getElementsByClassName("my_dynclass" + id);
 		unique[id] = items[0].cloneNode(true);
 		unique[id].style.display="block";
+		unique[id].textContent = unique[id].textContent.replace("Estimated between","");
 		unique[id].textContent = "(" + (items.length -1) + ") " +unique[id].textContent
 		
 	}
