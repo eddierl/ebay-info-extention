@@ -75,6 +75,7 @@ function main() {
 	// there is need to assign the onreadystatechange this way
 	// otherwise the function is contact with index = 0
 	var waitinf_for_text=document.createElement("div");
+	waitinf_for_text.className="waitfor";
 	waitinf_for_text.innerText="waiting for data..";
 	results[xhr.length-1].getElementsByClassName("dtl dtlsp")[0].appendChild(waitinf_for_text);
 	xhr[xhr.length-1].onreadystatechange = function(index) {
@@ -140,8 +141,14 @@ function main() {
 	
 	divElement.innerHTML = "<ul></ul>";
 	var check = setInterval(function(){
-		if(xhr.length == from_delivery.length) {window.clearInterval(check);} 
-		else {updateContent(styleSheetElement, from_delivery)}}, 1000);
+		if(updateContent(styleSheetElement, from_delivery) && 
+		  (xhr.length == from_delivery.length) && 
+		  (document.getElementsByClassName("waitfor").length == 0)) {
+		
+		window.clearInterval(check);
+		updateContent(styleSheetElement, from_delivery);
+		}
+		}, 1000);
 	
 }
 
