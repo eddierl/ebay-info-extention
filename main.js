@@ -95,9 +95,13 @@ function main() {
 				estimated_date.style.lineHeight ="1.25em";
 				
 				// attach a dynamic class to the estimate date
-				var fd = ms2days((parseDate(estimated_date.innerText)[1] - parseDate(Date())[0]));
-				from_delivery.push(fd);
-				estimated_date.className += " my_dynclass" + fd;
+				var fd = ms2days((parseDate(estimated_date.innerText)[0] - parseDate(Date())[0]));
+				var td = ms2days((parseDate(estimated_date.innerText)[1] - parseDate(Date())[0]));
+				var delivery_date = parseDate(estimated_date.innerText);
+
+				var val = Math.round(Math.sqrt(Math.pow(fd,2) + Math.pow(td,2)));
+				from_delivery.push(val);
+				estimated_date.className += " my_dynclass" + val;
 				results[index].getElementsByClassName("dtl dtlsp")[0].appendChild(estimated_date);
 				
 				// add seller rank to the item
