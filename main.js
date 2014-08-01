@@ -7,7 +7,22 @@ function parseDate(dateString) {
 		return [99,99];
 	}
 }
+function helpLink() {
+	var className = this.firstChild.className;
+	var items = document.getElementsByClassName(className);
+	
 
+	for (i in items) {
+	
+		if ( i == items.length - 1) {items[0].parentNode.scrollIntoView(); return false;}
+
+		if (items[i].parentNode.getBoundingClientRect().bottom - items[i].parentNode.getBoundingClientRect().height  > 0) { 
+		items[i].parentNode.scrollIntoView(); 
+		return false;}
+
+	};
+
+}
 function ms2days(ms) {
 	return ms/1000/60/60/24;
 }
@@ -157,11 +172,18 @@ function  generateHelp(from_delivery) {
 	var unique = {};
 	from_delivery.forEach(function(item) {unique[item] = item});
 	
-	for (id in unique) unique[id] = document.getElementsByClassName("my_dynclass" + id)[0].cloneNode(true);
+	for (id in unique) {
+		var items = document.getElementsByClassName("my_dynclass" + id);
+		unique[id] = items[0].cloneNode(true);
+		unique[id].style.display="block";
+		unique[id].textContent = "(" + (items.length -1) + ") " +unique[id].textContent
+		
+	}
 	
 	for (id in unique) {
 	var il = document.createElement("il");
 	il.appendChild(unique[id]);
+	il.addEventListener("click" ,helpLink);
 	result.appendChild(il);
 	};
 	
