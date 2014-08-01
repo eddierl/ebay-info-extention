@@ -1,6 +1,11 @@
 function parseDate(dateString) {
 	var datesArray =  dateString.match(/[^\d\s]+\s\d+/g);
-	return datesArray.map(function(dateS) { return Date.parse(dateS) });
+	if (datesArray) {
+		return datesArray.map(function(dateS) { return Date.parse(dateS) });
+	}
+	else {
+		return [99,99];
+	}
 }
 
 function ms2days(ms) {
