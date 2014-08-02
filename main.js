@@ -31,7 +31,7 @@ function ms2days(ms) {
 }
 function generateCss(from_delivery) {
 
-	var css_result = "";
+	var css_result = "#tstid ul :hover {text-decoration: underline; cursor: pointer;}";
 	
 	function updateColorScheme(levels) {
 		var count = 0
