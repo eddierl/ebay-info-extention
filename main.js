@@ -12,17 +12,16 @@ function parseDate(dateString) {
 }
 function helpLink() {
 	var className = (this.firstChild.className).match(re_MY_CLASS)[0];
-	var items = document.getElementsByClassName(className);
+	var items = document.getElementById("ResultSetItems").getElementsByClassName(className);
 	
 
 	for (i in items) {
 	
-		if ( i == items.length - 1) {items[0].parentNode.scrollIntoView(); return false;}
-
 		if (items[i].parentNode.getBoundingClientRect().bottom - items[i].parentNode.getBoundingClientRect().height  > 0) { 
 		items[i].parentNode.scrollIntoView(); 
 		return false;}
 
+		if ( i == items.length -1 ) {items[0].parentNode.scrollIntoView(); return false;};
 	};
 
 }
@@ -183,11 +182,11 @@ function  generateHelp(from_delivery) {
 	from_delivery.forEach(function(item) {unique[item] = item});
 	
 	for (id in unique) {
-		var items = document.getElementsByClassName(MY_CLASS + id);
+		var items = document.getElementById("ResultSetItems").getElementsByClassName(MY_CLASS + id);
 		unique[id] = items[0].cloneNode(true);
 		unique[id].style.display="block";
 		unique[id].textContent = unique[id].textContent.replace("Estimated between","");
-		unique[id].textContent = "(" + (items.length -1) + ") " +unique[id].textContent
+		unique[id].textContent = "(" + items.length + ") " +unique[id].textContent
 		
 	}
 	
