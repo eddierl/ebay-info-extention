@@ -108,6 +108,12 @@ function main() {
 
 				// add estimated date for delivery to the item
 				var estimated_date = res.getElementsByClassName("sh-del-frst")[0].childNodes[1];
+				if(!(estimated_date)) {
+					estimated_date = document.createElement("div");
+					estimated_date.appendChild(document.createElement("span"));
+					estimated_date.firstChild.className = "vi-acc-del-range";
+					estimated_date.firstChild.textContent = "Unknown";
+				}
 				estimated_date.style.lineHeight ="1.25em";
 				
 				// attach a dynamic class to the estimate date
