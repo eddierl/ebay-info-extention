@@ -1,3 +1,6 @@
+const MY_CLASS = "my_dynclass";
+var re_MY_CLASS = new RegExp(MY_CLASS + '\\d+');
+
 function parseDate(dateString) {
 	var datesArray =  dateString.match(/[^\d\s]+\s\d+/g);
 	if (datesArray) {
@@ -8,7 +11,7 @@ function parseDate(dateString) {
 	}
 }
 function helpLink() {
-	var className = this.firstChild.className;
+	var className = (this.firstChild.className).match(re_MY_CLASS)[0];
 	var items = document.getElementsByClassName(className);
 	
 
@@ -54,7 +57,7 @@ function generateCss(from_delivery) {
 	from_delivery.forEach(function(item) {unique[item] = item});
 	updateColorScheme(unique);
 	
-	for (item in unique) css_result += '.my_dynclass' + item + ' ' + unique[item] + ' ';
+	for (item in unique) css_result += '.' + MY_CLASS  + item + ' ' + unique[item] + ' ';
 
 	return css_result;
 }
@@ -123,7 +126,7 @@ function main() {
 
 				var val = Math.round(Math.sqrt(Math.pow(fd,2) + Math.pow(td,2)));
 				from_delivery.push(val);
-				estimated_date.className += " my_dynclass" + val;
+				estimated_date.className += " " + MY_CLASS + val;
 				results[index].getElementsByClassName("dtl dtlsp")[0].appendChild(estimated_date);
 				
 				// add seller rank to the item
@@ -180,7 +183,7 @@ function  generateHelp(from_delivery) {
 	from_delivery.forEach(function(item) {unique[item] = item});
 	
 	for (id in unique) {
-		var items = document.getElementsByClassName("my_dynclass" + id);
+		var items = document.getElementsByClassName(MY_CLASS + id);
 		unique[id] = items[0].cloneNode(true);
 		unique[id].style.display="block";
 		unique[id].textContent = unique[id].textContent.replace("Estimated between","");
